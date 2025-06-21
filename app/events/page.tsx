@@ -38,6 +38,9 @@ export default function Home() {
               Submit
             </button>
           </form>
+            <br/>
+        <p>The LLMs feedback goes here:</p>
+
         </div>
       </div>
     );

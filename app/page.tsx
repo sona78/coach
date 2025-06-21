@@ -1,55 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { newUser } from './actions';
+import { useRef } from 'react';
 
 export default function Home() {
-  const [formData, setFormData] = useState({
-    name: '',
-    goal: ''
-  });
+  const formRef = useRef<HTMLFormElement>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Validate form data
-    if (!formData.name.trim() || !formData.goal.trim()) {
-      alert('Please fill in both name and goal fields');
-      return;
-    }
-
+  const handleSubmit = async (formData: FormData) => {
     try {
-      // Here you can add your API call or data processing logic
-      console.log('Form submitted:', formData);
+      const result = await newUser(formData);
       
-      // Example: Send data to an API endpoint
-      // const response = await fetch('/api/users', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(formData),
-      // });
-      
-      // if (response.ok) {
-      //   const result = await response.json();
-      //   console.log('User created:', result);
-      // }
-      
-      // Reset form after successful submission
-      setFormData({ name: '', goal: '' });
-     
+      if (result.success) {
+        // Reset form
+        formRef.current?.reset();
+        alert(result.message);
+      } else {
+        alert(result.error);
+      }
     } catch (error) {
       console.error('Error submitting form:', error);
       alert('There was an error submitting your information. Please try again.');
     }
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
   };
 
   return (
@@ -59,7 +30,7 @@ export default function Home() {
           Welcome to your personal sounding board.
         </h1>
 
-        <form className="space-y-6" onSubmit={handleSubmit}>
+        <form ref={formRef} className="space-y-6" action={handleSubmit}>
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
               Name
@@ -68,8 +39,6 @@ export default function Home() {
               type="text" 
               id="name"
               name="name"
-              value={formData.name}
-              onChange={handleInputChange}
               placeholder="Please tell us your name:" 
               className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
@@ -84,8 +53,6 @@ export default function Home() {
               type="text" 
               id="goal"
               name="goal"
-              value={formData.goal}
-              onChange={handleInputChange}
               placeholder="What goal do you want to work on?" 
               className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
