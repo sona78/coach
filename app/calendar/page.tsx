@@ -17,7 +17,7 @@ export default function Home() {
           <h1 className="text-3xl font-bold text-gray-900 text-center">
             Welcome to Calendar App
           </h1>
-          <p className="text-gray-600 text-center">
+          <p className="text-gray-900 text-center">
             Sign in with your Google account to view and manage your calendar
           </p>
           <button
@@ -43,7 +43,7 @@ export default function Home() {
                 className="w-10 h-10 rounded-full"
               />
             )}
-            <h1 className="text-xl font-semibold">
+            <h1 className="text-xl font-semibold text-gray-900">
               Welcome, {session.user?.name}
             </h1>
           </div>

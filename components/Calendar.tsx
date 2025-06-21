@@ -43,7 +43,7 @@ export default function Calendar() {
 
   return (
     <div className="w-full bg-white rounded-xl shadow-lg p-6">
-      <h2 className="text-2xl font-bold mb-6">Your Calendar (Next 7 Days)</h2>
+      <h2 className="text-2xl text-gray-700 font-bold mb-6">Your Calendar (Next 7 Days)</h2>
       <div className="space-y-4">
         {events.length > 0 ? (
           events.map((event: any) => (
@@ -51,7 +51,7 @@ export default function Calendar() {
               key={event.id}
               className="p-4 border rounded-lg hover:bg-gray-50 transition-colors"
             >
-              <h3 className="font-semibold">{event.summary}</h3>
+              <h3 className="text-gray-500 font-semibold">{event.summary}</h3>
               <p className="text-sm text-gray-600">
                 {format(new Date(event.start.dateTime), "MMM d, yyyy h:mm aa")} -{" "}
                 {format(new Date(event.end.dateTime), "h:mm aa")}
