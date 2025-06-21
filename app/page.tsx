@@ -1,61 +1,72 @@
-"use client";
-import { useState } from "react";
+'use client';
+
+import { newUser } from './actions';
+import { useRef } from 'react';
 
 export default function Home() {
-  const [score, setScore] = useState(65); // Example score
-  const [listening, setListening] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
-  // Placeholder for voice button logic
-  const handleVoiceClick = () => {
-    setListening((prev) => !prev);
-    // Add voice recognition logic here
+  const handleSubmit = async (formData: FormData) => {
+    try {
+      const result = await newUser(formData);
+      
+      if (result.success) {
+        // Reset form
+        formRef.current?.reset();
+        alert(result.message);
+      } else {
+        alert(result.error);
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('There was an error submitting your information. Please try again.');
+    }
   };
 
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
-      <main className="flex flex-col items-center gap-10 w-full max-w-md">
-        <h1 className="text-3xl font-bold text-gray-900 text-center">
-          Welcome to Your Goals Tracker
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
+        <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
+          Welcome to your personal sounding board.
         </h1>
-        <p className="text-gray-600 text-center">
-          Track your progress and get instant feedback on how well you’re doing!
-        </p>
 
-        {/* Score Bar */}
-        <div className="w-full">
-          <div className="flex justify-between mb-1">
-            <span className="text-sm font-medium text-indigo-700">Your Score</span>
-            <span className="text-sm font-medium text-indigo-700">{score}%</span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-4">
-            <div
-              className="bg-indigo-500 h-4 rounded-full transition-all"
-              style={{ width: `${score}%` }}></div>
-          </div>
-        </div>
-
-        {/* Voice Button */}
-        <button
-          onClick={handleVoiceClick}
-          className={`flex items-center gap-2 px-6 py-3 rounded-full shadow-md text-white font-semibold transition-colors ${
-            listening ? "bg-red-500" : "bg-indigo-600 hover:bg-indigo-700"
-          }`}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 18v3m0 0h3m-3 0H9m6-3a6 6 0 10-12 0 6 6 0 0012 0zm-6 0V6a2 2 0 114 0v6a2 2 0 11-4 0z"
+        <form ref={formRef} className="space-y-6" action={handleSubmit}>
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+              Name
+            </label>
+            <input 
+              type="text" 
+              id="name"
+              name="name"
+              placeholder="Please tell us your name:" 
+              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              required
             />
-          </svg>
-          {listening ? "Listening..." : "Speak Your Goal"}
-        </button>
-      </main>
+          </div>
+          
+          <div>
+            <label htmlFor="goal" className="block text-sm font-medium text-gray-700 mb-2">
+              Goal
+            </label>
+            <input 
+              type="text" 
+              id="goal"
+              name="goal"
+              placeholder="What goal do you want to work on?" 
+              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              required
+            />
+          </div>
+          
+          <button 
+            type="submit" 
+            className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
