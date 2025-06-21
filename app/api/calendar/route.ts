@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]/route";
+import { CalendarEvent } from "@/lib/types";
 
 export async function GET(request: Request) {
   const session = await getServerSession(authOptions);
@@ -35,7 +36,7 @@ export async function GET(request: Request) {
       throw new Error(`Google Calendar API error: ${response.statusText}`);
     }
 
-    const data = await response.json();
+    const data: { items: CalendarEvent[] } = await response.json();
     return NextResponse.json(data.items || []);
   } catch (error) {
     console.error("Error fetching calendar events:", error);
@@ -57,7 +58,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const event = await request.json();
+    const event: Partial<CalendarEvent> = await request.json();
 
     const response = await fetch(
       "https://www.googleapis.com/calendar/v3/calendars/primary/events",
@@ -80,7 +81,7 @@ export async function POST(request: Request) {
       throw new Error(`Google Calendar API error: ${response.statusText}`);
     }
 
-    const data = await response.json();
+    const data: CalendarEvent = await response.json();
     return NextResponse.json(data);
   } catch (error) {
     console.error("Error creating calendar event:", error);
