@@ -9,6 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@googleapis/calendar": "^10.0.1",
+    "@types/next-auth": "^3.13.0",
+    "arctic": "^3.7.0",
+    "date-fns": "^4.1.0",
+    "date-fns-tz": "^3.2.0",
+    "googleapis": "^150.0.1",
+    "next-auth": "^4.24.11",
     "@pinecone-database/pinecone": "^6.1.1",
     "next": "15.3.4",
     "openai": "^5.6.0",
