@@ -10,20 +10,22 @@ export default function Home() {
 
   const handleSubmit = async (formData: FormData) => {
     try {
-      const result = await newUser(formData);
+      const response = await fetch("/api/event", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: name, situation: goal, reaction: goal }),
+      });
 
-      if (result.success) {
-        // Reset form
-        formRef.current?.reset();
-        setName("");
-        setGoal("");
-        alert(result.message);
-      } else {
-        alert(result.error);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
       }
+
+      const data = await response.json();
+      console.log("Event submitted successfully:", data);
     } catch (error) {
-      console.error("Error submitting form:", error);
-      alert("There was an error submitting your information. Please try again.");
+      console.error("Error submitting event:", error);
     }
   };
 
