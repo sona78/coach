@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { newUser } from './actions';
 import { useRef } from 'react';
@@ -9,6 +9,8 @@ export default function Home() {
   const router = useRouter();
   const { data: session, status } = useSession();
   const formRef = useRef<HTMLFormElement>(null);
+  const [name, setName] = useState("");
+  const [goal, setGoal] = useState("");
 
   const handleSubmit = async (formData: FormData) => {
     try {
@@ -35,8 +37,8 @@ export default function Home() {
         alert(result.error || 'Failed to submit goal');
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('There was an error submitting your information. Please try again.');
+      console.error("Error submitting form:", error);
+      alert("There was an error submitting your information. Please try again.");
     }
   };
 
@@ -96,20 +98,21 @@ export default function Home() {
             <label htmlFor="goal" className="block text-sm font-medium text-gray-700 mb-2">
               Goal
             </label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               id="goal"
               name="goal"
-              placeholder="What goal do you want to work on?" 
+              value={goal}
+              onChange={(e) => setGoal(e.target.value)}
+              placeholder="What goal do you want to work on?"
               className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
             />
           </div>
-          
-          <button 
-            type="submit" 
-            className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-          >
+
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
             Submit
           </button>
         </form>
