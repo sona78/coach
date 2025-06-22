@@ -1,7 +1,7 @@
 "use client";
 
 import { newUser } from './actions';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
@@ -9,7 +9,6 @@ export default function Home() {
   const router = useRouter();
   const { data: session, status } = useSession();
   const formRef = useRef<HTMLFormElement>(null);
-  const [name, setName] = useState("");
   const [goal, setGoal] = useState("");
 
   const handleSubmit = async (formData: FormData) => {
